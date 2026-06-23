@@ -1,10 +1,13 @@
+import MainRoutes from './routes/MainRoutes';
 
 function App() {
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <h1 className="text-3xl font-bold"> FinTack</h1>
-    </div>
+    <>
+    <MainRoutes/>
+    
+    </>
+    
   )
 }
 
