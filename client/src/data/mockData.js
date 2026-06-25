@@ -31,6 +31,8 @@ export const mockTransactions = [
   { id: 13, desc: 'Loyer',             amount: 80000,  type: 'depense', catId: 3, date: '2025-05-02' },
   { id: 14, desc: 'Alimentation',      amount: 42000,  type: 'depense', catId: 1, date: '2025-05-07' },
   { id: 15, desc: 'Clinique',          amount: 35000,  type: 'depense', catId: 4, date: '2025-05-15' },
+  { id: 16, desc: 'Clinique',          amount: 35000,  type: 'depense', catId: 4, date: '2026-06-25' },
+  { id: 17,  desc: 'Salaire juin',     amount: 350000, type: 'revenu',  catId: 6, date: '2026-06-25' },
 ]
 
 // ============================================================
