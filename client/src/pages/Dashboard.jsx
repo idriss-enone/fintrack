@@ -88,7 +88,7 @@ export default function Dashboard() {
       )}
       
       {/* Métriques */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Total revenus" value={fmt(totalRev)} color="text-green-600" icon="💰" />
         <StatCard label="Total dépenses" value={fmt(totalDep)} color="text-red-500"   icon="💸" />
         <StatCard label="Solde net" value={fmt(solde)} color={solde >= 0 ? 'text-green-600' : 'text-red-500'} icon="📈" />
