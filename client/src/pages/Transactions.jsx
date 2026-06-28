@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useRef } from 'react';
 import { useTransactions } from '../hooks/useTransactions';
 import Badge from '../components/ui/Badge';
 import FormField from '../components/ui/FormField';
@@ -14,6 +14,8 @@ import { formatAmount } from '../utils/helpers';
 
 const  Transactions = () => {
   
+  const tbodyRef = useRef(null);
+
   const {
     filteredTransactions,filters,setFilters,
     form,setForm,availableMonths,
@@ -51,6 +53,7 @@ const  Transactions = () => {
           message="Cette transaction sera définitivement supprimée. Continuer ?"
           onConfirm={handleDelete}
           onCancel={() => setConfirmId(null)}
+          tbodyRef={tbodyRef} 
         />
       )}
       
@@ -237,7 +240,11 @@ const  Transactions = () => {
           ) :(
             <>
             <div className="hidden md:block overflow-x-auto">
-              <table className="w-full text-sm" role="table">
+              <table 
+                ref={tbodyRef} tabIndex={-1} 
+                role="table"
+                className="w-full text-sm divide-y divide-gray-50 focus:outline-none" 
+                >
                 <caption className="sr-only">Liste des transactions</caption>
                 <thead className="bg-gray-50 border-b border-gray-100">
                   <tr>
