@@ -18,7 +18,6 @@ export function AppProvider({ children }) {
 
   // Utilitaires
   const getCat = (id) => categories.find(c => c.id === id) || { name: 'Autre', emoji: '📦' }
-  const fmt = (n) => new Intl.NumberFormat('fr-FR').format(Math.round(n)) + ' FCFA'
 
   return (
     <AppContext.Provider value={{
@@ -28,7 +27,6 @@ export function AppProvider({ children }) {
       recurrents,  setRecurrents,
       goals,       setGoals,
       getCat,
-      fmt,
     }}>
       {children}
     </AppContext.Provider>

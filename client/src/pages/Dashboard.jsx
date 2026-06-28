@@ -4,25 +4,29 @@ import {
 import AlertBox from '../components/ui/AlertBox';
 import StatCard  from '../components/ui/StatCard'
 import { useApp } from '../context/AppContext';
+import { 
+  formatAmount,formatAmountCompact,getCurrentMonth 
+} from '../utils/helpers';
+import { TRANSACTION_TYPES } from '../utils/constants';
 
 
  const COLORS = ["#3B82F6","#10B981","#F59E0B","#EF4444","#8B5CF6","#EC4899","#14B8A6","#F97316"];
 
 
 export default function Dashboard() {
-  const { transactions, budgets, getCat, fmt } = useApp();
+  const { transactions, budgets, getCat } = useApp();
   
-  const currentMonth = new Date().toISOString().slice(0, 7);
+  const currentMonth = getCurrentMonth();
 
   // ── Métriques globales ──────────────────────────────────────
   const totalRev = useMemo(
-    () => transactions.filter(t => t.type === 'revenu')
+    () => transactions.filter(t => t.type === TRANSACTION_TYPES.REVENU)
       .reduce((s, t) => s + t.amount, 0),[transactions]
   );
 
   
   const totalDep = useMemo(
-    () => transactions.filter(t => t.type === 'depense')
+    () => transactions.filter(t => t.type === TRANSACTION_TYPES.DEPENSE)
       .reduce((s, t) => s + t.amount, 0), [transactions]
   );
 
@@ -30,7 +34,7 @@ export default function Dashboard() {
   const solde =   totalRev - totalDep
 
   const depMois = useMemo(() => 
-    transactions.filter(t => t.type === 'depense' && t.date.startsWith(currentMonth))
+    transactions.filter(t => t.type === TRANSACTION_TYPES.DEPENSE && t.date.startsWith(currentMonth))
     .reduce((s, t) => s + t.amount, 0),[transactions,currentMonth]
   );
 
@@ -51,7 +55,7 @@ export default function Dashboard() {
 
   const pieData = useMemo(() =>{
     const totals = {}
-    transactions.filter(t => t.type === 'depense')
+    transactions.filter(t => t.type === TRANSACTION_TYPES.DEPENSE)
     .forEach(t => {totals[t.catId] = (totals[t.catId] || 0) + t.amount})
     return Object.entries(totals).map(([catId,value]) =>({
       name: getCat(parseInt(catId)).name,
@@ -63,18 +67,17 @@ export default function Dashboard() {
    const alerts = useMemo(() => {
     return budgets.map(b => {
       const spent = transactions
-      .filter( t => t.type === 'depense' && t.catId === b.catId && t.date.startsWith(currentMonth))
+      .filter( t => t.type === TRANSACTION_TYPES.DEPENSE && t.catId === b.catId && t.date.startsWith(currentMonth))
       .reduce((s,t) => s + t.amount,0)
 
       const pct = Math.round ( spent / b.limit * 100);
       const cat = getCat(b.catId);
-      if(pct >= 100) return {type:'danger', message: `${cat.emoji} ${cat.name}: budget dépassé! (${fmt(spent)} / ${fmt(b.limit)})`}
-      if(pct >= 80) return {type:'warn', message: `${cat.emoji} ${cat.name}: ${pct}% du budget utilisé (${fmt(spent)} / ${fmt(b.limit)})`}
+      if(pct >= 100) return {type:'danger', message: `${cat.emoji} ${cat.name}: budget dépassé! (${formatAmount(spent)} / ${formatAmount(b.limit)})`}
+      if(pct >= 80) return {type:'warn', message: `${cat.emoji} ${cat.name}: ${pct}% du budget utilisé (${formatAmount(spent)} / ${formatAmount(b.limit)})`}
       return null;
     }).filter(Boolean)
-   },[budgets,transactions,currentMonth,getCat,fmt])
+   },[budgets,transactions,currentMonth,getCat])
 
-  const fmtShort = (v) => new Intl.NumberFormat('fr-Fr',{notation:'compact'}).format(v)
   return (
     
     <div className="flex flex-col gap-6">
@@ -89,10 +92,10 @@ export default function Dashboard() {
       
       {/* Métriques */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Total revenus" value={fmt(totalRev)} color="text-green-600" icon="💰" />
-        <StatCard label="Total dépenses" value={fmt(totalDep)} color="text-red-500"   icon="💸" />
-        <StatCard label="Solde net" value={fmt(solde)} color={solde >= 0 ? 'text-green-600' : 'text-red-500'} icon="📈" />
-        <StatCard label="Dépenses ce mois" value={fmt(depMois)}  color="text-amber-600" icon="📅" />
+        <StatCard label="Total revenus" value={formatAmount(totalRev)} color="text-green-600" icon="💰" />
+        <StatCard label="Total dépenses" value={formatAmount(totalDep)} color="text-red-500"   icon="💸" />
+        <StatCard label="Solde net" value={formatAmount(solde)} color={solde >= 0 ? 'text-green-600' : 'text-red-500'} icon="📈" />
+        <StatCard label="Dépenses ce mois" value={formatAmount(depMois)}  color="text-amber-600" icon="📅" />
       </div>
 
       {/* Graphiques */}
@@ -105,8 +108,8 @@ export default function Dashboard() {
           <ResponsiveContainer width="100%" height={300}> {/*220*/}
             <BarChart data={barData} barGap={4}>
               <XAxis dataKey="mois" tick={{ fontSize:12 }}/>
-              <YAxis tickFormatter={fmtShort} tick={{ fontSize:11 }}/>
-              <Tooltip formatter={(v) => fmt(v)}/> 
+              <YAxis tickFormatter={formatAmountCompact} tick={{ fontSize:11 }}/>
+              <Tooltip formatter={(v) => formatAmount(v)}/> 
               <Bar dataKey="Revenus" fill="#10B981" radius={[4,4,0,0]}/>
               <Bar dataKey="Depenses" fill="#EF4444" radius={[4,4,0,0]}/>
               
@@ -144,7 +147,7 @@ export default function Dashboard() {
             iconSize={8}
             formatter={(v) => <span style={{fontSize:11}}>{v}</span>}
             />
-            <Tooltip formatter={(v) => fmt(v)}/>
+            <Tooltip formatter={(v) => formatAmount(v)}/>
           </PieChart>
         </ResponsiveContainer>
       </div>
@@ -171,7 +174,7 @@ export default function Dashboard() {
                       <p className="text-xs text-gray-400 truncate">{cat.name} . {t.date}</p>
                     </div>
                     <span className={`text-sm font-semibold flex-shrink-0 ${t.type === 'revenu' ? 'text-green-600': 'text-red-500'}`}>
-                      {t.type === 'revenu' ? '+' : '-'}{fmt(t.amount)}
+                      {t.type === 'revenu' ? '+' : '-'}{formatAmount(t.amount)}
                     </span>
                   </div>
                 )

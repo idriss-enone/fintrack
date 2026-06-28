@@ -1,19 +1,39 @@
 import { useState, useMemo } from 'react'
-import { useApp } from '../context/AppContext'
+import { useApp } from '../context/AppContext';
+import { 
+    getTodayDate,
+    extractMonths
+} from '../utils/helpers';
+import { TRANSACTION_TYPES } from '../utils/constants';
+
+// Valeurs initiales du formulaire
+const INITIAL_FORM = {
+  desc:   '',
+  amount: '',
+  type:   TRANSACTION_TYPES.DEPENSE,
+  catId:  '',
+  date:   getTodayDate(),
+}
+
+// Valeurs initiales des filtres
+const INITIAL_FILTERS = {
+  type:  'all',
+  catId: 'all',
+  month: 'all',
+}
 
 export function useTransactions(){
 
     const { transactions, setTransactions, categories, getCat, fmt } = useApp();
-    const [filters, setFilters] = useState({ type: 'all', catId: 'all', month: 'all' });
-    const [form, setForm] = useState({
-        desc: '', amount: '', type: 'depense', catId: '', date: new Date().toISOString().split('T')[0],
-    });
+    const [filters, setFilters] = useState(INITIAL_FILTERS);
+    const [form, setForm] = useState(INITIAL_FORM);
+    const [errors,  setErrors]  = useState({})
     
     // Mois disponibles dans les transactions
-    const availableMonths = useMemo(() => {
-        const months = [...new Set(transactions.map(t => t.date.slice(0, 7)))]
-        return months.sort().reverse()
-    },[transactions])
+    const availableMonths = useMemo(
+        () => extractMonths(transactions),
+        [transactions]
+    )
 
     // Transactions filtrées
     const filteredTransactions = useMemo(() => {
@@ -26,9 +46,21 @@ export function useTransactions(){
         });
     }, [transactions, filters]);
 
+    // Validation du formulaire
+    const validate = () => {
+        const newErrors = {};
+        if (!form.desc.trim())  newErrors.desc   = 'La description est requise.';
+        if (!form.amount || parseFloat(form.amount) <= 0)
+                            newErrors.amount  = 'Le montant doit être supérieur à 0.';
+        if (!form.date)         newErrors.date   = 'La date est requise.';
+
+        setErrors(newErrors)
+        return Object.keys(newErrors).length === 0
+    }
+
     // Ajouter une transaction
     const addTransaction = () => {
-        if (!form.desc.trim() || !form.amount || !form.date) return false
+        if (!validate()) return false
 
         const catId = form.catId
         ? parseInt(form.catId)
@@ -69,7 +101,7 @@ export function useTransactions(){
     return {
         transactions,filteredTransactions , filters, setFilters,
         availableMonths,getCat,fmt,form,setForm,categories,
-        addTransaction,deleteTransaction,exportCSV
+        addTransaction,deleteTransaction,exportCSV,errors
 
     }
 }
