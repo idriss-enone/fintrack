@@ -20,7 +20,7 @@ const Layout = () => {
 
       {/* Contenu principal */}
       <div className="flex flex-col flex-1">
-        <Navbar onMenuClick={() => setSidebarOpen(prev => !prev)}/>
+        <Navbar isMenuOpen={sidebarOpen} onMenuClick={() => setSidebarOpen(prev => !prev)}/>
         <main className="flex-1 p-4 md:p-6 overflow-y-auto">
           <Outlet />
         </main>

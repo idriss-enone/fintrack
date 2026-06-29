@@ -33,6 +33,25 @@ export function getTodayDate() {
 }
 
 /**
+ * Retourne la date du jour au format complet français (ex: Lundi 29 juin 2026)
+ * @param {Date|string} date - La date à formater (par défaut la date du jour)
+ * @returns {string} La date formatée avec la première lettre en majuscule
+ */
+export const getFullDate = (date = new Date()) => {
+  const d = typeof date === 'string' ? new Date(date) : date;
+  
+  const formatted = d.toLocaleDateString('fr-FR', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  // Met automatiquement la première lettre en majuscule (ex: "lundi" -> "Lundi")
+  return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+};
+
+/**
  * Extrait les mois uniques d'une liste de transactions, triés du plus récent
  * @param {Array} transactions
  * @returns {string[]}
@@ -41,3 +60,4 @@ export function extractMonths(transactions) {
   const months = new Set(transactions.map(t => t.date.slice(0, 7)));
   return [...months].sort().reverse();
 }
+
