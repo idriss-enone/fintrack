@@ -4,34 +4,35 @@ import { X } from 'lucide-react'
  * Dialog de confirmation accessible
  * Utilise role="dialog" et aria-modal pour les lecteurs d'écran
  */
-export default function ConfirmDialog({ message, onConfirm, onCancel,tbodyRef }) {
-  const dialogRef    = useRef(null);
+export default function ConfirmDialog({ message, onConfirm, onCancel,...props }) {
+  const dialogRef = useRef(null);
   const cancelBtnRef = useRef(null);
 
-  // ── Bloquer le scroll du body ─────────────────────────────
-  useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden'
-    return () => {
-     document.body.style.overflow = previousOverflow
-    } 
-  }, []);
 
-  // ── Focus automatique à l'ouverture ──────────────────────
+  // ── Ouvrir le dialog natif à l'initialisation avec Focus automatique   ─────────────
   useEffect(() => {
+    const dialog = dialogRef.current;
     const previouslyFocusedElement = document.activeElement;
-    cancelBtnRef.current?.focus();
+    
+    if (!dialog) return;
 
-    // 3. Fonction de nettoyage (au démontage)
-    return () => {
+    dialog.showModal();
+
+    cancelBtnRef.current?.focus()
+
+    /*return () => {
+
+      //if (dialog.open) dialog.close();
       
-      if (document.body.contains(previouslyFocusedElement)) {
-        previouslyFocusedElement.focus();
-      }else {
-        tbodyRef.current?.focus();
-      }
-    };
-  }, [tbodyRef]);
+      if (document.body.contains(previouslyFocusedElement)) previouslyFocusedElement.focus();
+      else props.tbodyRef.current?.focus();
+      
+    }*/
+  },[props.tbodyRef,onCancel]);
+ 
+
+ 
+
 
   // ── Fermeture via Escape ──────────────────────────────────
   useEffect(() => {
@@ -85,49 +86,45 @@ export default function ConfirmDialog({ message, onConfirm, onCancel,tbodyRef })
 
   return (
     <>
-    {/* Overlay — clic ferme le dialog */}
-    <div
-        className="fixed inset-0 z-50 bg-black/40"
-        aria-hidden="true"
-        onClick={onCancel}
-    />
-
-    {/* Dialog */}
-    <div
-      ref={dialogRef}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="confirm-dialog-title"
-      aria-describedby="confirm-dialog-desc"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
-    >
-      <div className="bg-white rounded-xl shadow-xl p-6 max-w-sm w-full space-y-4 pointer-events-auto">
-
-        {/* En-tête avec titre + bouton fermer */}
-        <div className="flex items-start justify-between gap-4 mb-3">
-          <h2 id="confirm-dialog-title" className="text-base font-semibold text-gray-800">
-            Confirmer la suppression
-          </h2>
-          <button
-            onClick={onCancel}
-            aria-label="Fermer"
-            className="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-md p-0.5 flex-shrink-0"
-          >
-            <X size={18} aria-hidden="true" />
-          </button>
-        </div>
-        {/* Message */}
-        
-        
-        <p 
-          id="confirm-dialog-desc" 
-          className="text-sm text-gray-500"
+       {/* Dialog */}
+        <dialog
+          ref={dialogRef}
+          onClose={onCancel}
+          className="
+            fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+            rounded-xl shadow-xl p-6 max-w-sm w-full space-y-4
+            m-0 backdrop:bg-black/40
+            focus:outline-none
+          "
+          aria-labelledby="confirm-dialog-title"
+          aria-describedby="confirm-dialog-desc"
         >
-            {message}
-        </p>
-
-        {/* Actions */}
-        <div className="flex gap-3 justify-end">
+      {/* En-tête avec titre + bouton fermer */}
+      <div className="flex items-start justify-between gap-4 mb-3">
+        <h2 id="confirm-dialog-title" className="text-base font-semibold text-gray-800">
+          Confirmer la suppression
+        </h2>
+        <button
+          onClick={onCancel}
+          aria-label="Fermer"
+          className="
+          text-gray-400 hover:text-gray-600 transition-colors 
+          focus:outline-none focus:ring-2 focus:ring-gray-300 
+          rounded-md p-0.5 flex-shrink-0"
+        >
+          <X size={18} aria-hidden="true" />
+        </button>
+      </div>
+      {/* Message */}
+        
+      <p 
+        id="confirm-dialog-desc" 
+        className="text-sm text-gray-500"
+      >
+          {message}
+      </p>
+      {/* Actions */}
+        <div className="flex gap-3 justify-end pt-2">
           <button
             ref={cancelBtnRef}
             onClick={onCancel}
@@ -147,8 +144,8 @@ export default function ConfirmDialog({ message, onConfirm, onCancel,tbodyRef })
             Supprimer
           </button>
         </div>
-      </div>
-    </div>
+    </dialog>
+    
     </>
   )
 }

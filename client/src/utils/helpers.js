@@ -33,6 +33,14 @@ export function getTodayDate() {
 }
 
 /**
+ * Génère un identifiant unique
+ * @returns {string}
+ */
+export function generateId() {
+  return crypto.randomUUID()
+}
+
+/**
  * Retourne la date du jour au format complet français (ex: Lundi 29 juin 2026)
  * @param {Date|string} date - La date à formater (par défaut la date du jour)
  * @returns {string} La date formatée avec la première lettre en majuscule

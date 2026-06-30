@@ -9,6 +9,8 @@ import Input         from '../components/ui/Input'
 import { TRANSACTION_TYPES } from '../utils/constants';
 import { formatAmount } from '../utils/helpers';
 
+import { Upload, Plus, X, Trash2 } from 'lucide-react'
+
 
 
 
@@ -64,21 +66,31 @@ const  Transactions = () => {
         <div className="flex gap-2">
           <button
             onClick={exportCSV}
-            className="flex items-center px-3 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            className="
+            flex items-center gap-2 px-3 py-2 text-sm border border-gray-200 
+            rounded-lg hover:bg-gray-50 transition-colors"
           >
-            📤 Export CSV
+            <Upload size={15} aria-hidden="true" /> Export CSV
           </button>
           <button
             onClick={() => { setShowForm(prev => !prev)}}
-            className="flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-          >{showForm ? '✕ Annuler' : '+ Ajouter'}</button>
+            className="
+            flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 text-white 
+            rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          >
+            {showForm 
+            ?
+              <><X size={15} aria-hidden="true" />Annuler </>
+            : <><Plus size={15} aria-hidden="true" />Ajouter </>
+          }
+          </button>
         </div>
       </div>
 
       {/* Formulaire d'ajout */}
 
       {showForm && (
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 md:p-5 space-y-4">
+        <div className="bg-white rounded-xlAjouter border border-gray-100 shadow-sm p-4 md:p-5 space-y-4">
           <h2 className="text-sm font-semibold text-gray-700">Nouvelle transaction</h2>
 
           {/* Sélecteur de type */}
@@ -293,7 +305,7 @@ const  Transactions = () => {
                             className="text-gray-300 hover:text-red-500 transition-colors text-lg"
                             aria-label="Supprimer"
                           >
-                            🗑️
+                            <Trash2 size={15} aria-hidden="true" />
                           </button>
                       </td>
                     </tr>
@@ -328,7 +340,7 @@ const  Transactions = () => {
                     className="text-gray-300 hover:text-red-500 transition-colors"
                     aria-label={`Supprimer ${t.desc}`}
                   >
-                    🗑️
+                    <Trash2 size={15} aria-hidden="true" />
                   </button>
                 </div>
               </li>
