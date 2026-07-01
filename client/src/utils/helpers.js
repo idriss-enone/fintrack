@@ -60,6 +60,18 @@ export const getFullDate = (date = new Date()) => {
 };
 
 /**
+ * Calcule le pourcentage entre deux nombres, plafonné à 100
+ * @param {number} value
+ * @param {number} total
+ * @returns {number}
+ */
+export function calcPercent(value, total) {
+  if (!total) return 0
+  return Math.min(100, Math.round((value / total) * 100))
+}
+
+
+/**
  * Extrait les mois uniques d'une liste de transactions, triés du plus récent
  * @param {Array} transactions
  * @returns {string[]}
