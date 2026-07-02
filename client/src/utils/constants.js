@@ -8,3 +8,8 @@ export const CATEGORY_TYPES = {
   REVENU:  'revenu',
   BOTH:    'both',
 }
+
+export const FREQUENCIES = {
+  MENSUEL:    'mensuel',
+  HEBDOMADAIRE: 'hebdo',
+}
