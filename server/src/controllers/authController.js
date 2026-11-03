@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { withTransaction } from "../db.js";
-import * as userModel from "../models/UserModel.js";
+import * as userModel from "../models/userModel.js";
 import {
     normalizeEmail,
     normalizeCurrency,
