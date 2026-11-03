@@ -16,10 +16,6 @@ if (!process.env.DATABASE_URL) {
     throw new Error("❌ ERREUR CRITIQUE : DATABASE_URL est introuvable ou indéfinie par l'hébergeur (Railway) !");
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> d9547803920128e05741f49bc7c41afdb904c8f0
 // Les colonnes DATE (OID 1082) sont renvoyées en 'YYYY-MM-DD' au lieu d'un objet Date JS,
 // pour éviter les décalages de fuseau horaire à la sérialisation JSON.
 types.setTypeParser(1082, (val) => val);
