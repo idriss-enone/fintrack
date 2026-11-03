@@ -15,7 +15,7 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     max: 20,                        // nombre max de clients dans le pool
     idleTimeoutMillis: 30000,       // inactivité avant fermeture d'une connexion
-    //connectionTimeoutMillis: 10000, // temps max pour obtenir une connexion (réveil de Neon inclus)
+    connectionTimeoutMillis: 30000, // temps max pour obtenir une connexion (réveil de Neon inclus)
 });
 
 pool.on('connect', (client) => {
