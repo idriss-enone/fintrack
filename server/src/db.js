@@ -1,19 +1,11 @@
 //import "dotenv/config";
 import pkg from "pg";
-
 const { Pool, types } = pkg;
 
-// ÉTAPE A : Sécurité anti-écrasement
-// On ne charge dotenv qu'en local pour éviter qu'il perturbe Railway
 
-/* if (process.env.NODE_ENV !== 'production') {
-    await import('dotenv/config');
-} */
-
-// ÉTAPE B : Forcer un crash explicite si Railway ne donne pas la variable
-// Cela évitera que le driver pg essaie discrètement d'utiliser 127.0.0.1
+// Sans cette variable, pg se rabattrait silencieusement sur localhost:5432
 if (!process.env.DATABASE_URL) {
-    throw new Error("❌ ERREUR CRITIQUE : DATABASE_URL est introuvable ou indéfinie par l'hébergeur (Railway) !");
+  throw new Error("DATABASE_URL is missing: check your environment variables.");
 }
 
 // Les colonnes DATE (OID 1082) sont renvoyées en 'YYYY-MM-DD' au lieu d'un objet Date JS,
@@ -29,7 +21,6 @@ const pool = new Pool({
     max: 20,                        // nombre max de clients dans le pool
     idleTimeoutMillis: 30000,       // inactivité avant fermeture d'une connexion
     connectionTimeoutMillis: 30000, // temps max pour obtenir une connexion (réveil de Neon inclus)
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
 pool.on('connect', (client) => {
