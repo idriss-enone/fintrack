@@ -1,4 +1,4 @@
-import "dotenv/config";
+//import "dotenv/config";
 import pkg from "pg";
 
 const { Pool, types } = pkg;
@@ -6,9 +6,9 @@ const { Pool, types } = pkg;
 // ÉTAPE A : Sécurité anti-écrasement
 // On ne charge dotenv qu'en local pour éviter qu'il perturbe Railway
 
-if (process.env.NODE_ENV !== 'production') {
+/* if (process.env.NODE_ENV !== 'production') {
     await import('dotenv/config');
-}
+} */
 
 // ÉTAPE B : Forcer un crash explicite si Railway ne donne pas la variable
 // Cela évitera que le driver pg essaie discrètement d'utiliser 127.0.0.1
