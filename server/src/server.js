@@ -1,7 +1,12 @@
-//import "dotenv/config";
+
+import 'dotenv/config';
 import express from 'express'
 import cors from 'cors';
 import authRoutes from "./routes/authRoutes.js";
+
+/* if (process.env.NODE_ENV !== 'production') {
+  await import('dotenv/config');
+} */
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -37,5 +42,5 @@ app.use((err, req, res, next) => {
 
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Serveur démarré sur ${PORT}`);
+  console.log(`Serveur démarré sur le port ${PORT}`);
 })

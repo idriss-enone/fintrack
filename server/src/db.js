@@ -3,6 +3,19 @@ import pkg from "pg";
 
 const { Pool, types } = pkg;
 
+// ÉTAPE A : Sécurité anti-écrasement
+// On ne charge dotenv qu'en local pour éviter qu'il perturbe Railway
+/* if (process.env.NODE_ENV !== 'production') {
+    await import('dotenv/config');
+} */
+
+// ÉTAPE B : Forcer un crash explicite si Railway ne donne pas la variable
+// Cela évitera que le driver pg essaie discrètement d'utiliser 127.0.0.1
+if (!process.env.DATABASE_URL) {
+    throw new Error("❌ ERREUR CRITIQUE : DATABASE_URL est introuvable ou indéfinie par l'hébergeur (Railway) !");
+}
+
+
 // Les colonnes DATE (OID 1082) sont renvoyées en 'YYYY-MM-DD' au lieu d'un objet Date JS,
 // pour éviter les décalages de fuseau horaire à la sérialisation JSON.
 types.setTypeParser(1082, (val) => val);
