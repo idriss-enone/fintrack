@@ -1,12 +1,13 @@
 
-import 'dotenv/config';
+
 import express from 'express'
 import cors from 'cors';
 import authRoutes from "./routes/authRoutes.js";
 
-/* if (process.env.NODE_ENV !== 'production') {
+
+if (process.env.NODE_ENV !== 'production') {
   await import('dotenv/config');
-} */
+}
 
 const app = express();
 const PORT = process.env.PORT || 8000;
