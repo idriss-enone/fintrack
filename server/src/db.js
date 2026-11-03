@@ -1,4 +1,4 @@
-import "dotenv/config";
+//import "dotenv/config";
 import pkg from "pg";
 
 const { Pool, types } = pkg;

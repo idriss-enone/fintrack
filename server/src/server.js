@@ -1,4 +1,4 @@
-import "dotenv/config";
+//import "dotenv/config";
 import express from 'express'
 import cors from 'cors';
 import authRoutes from "./routes/authRoutes.js";
@@ -37,5 +37,5 @@ app.use((err, req, res, next) => {
 
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Serveur démarré sur http://localhost:${PORT}`);
+  console.log(`Serveur démarré sur ${PORT}`);
 })
