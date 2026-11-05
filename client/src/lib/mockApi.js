@@ -1,4 +1,4 @@
-import { mockUser } from "../utils/mockData";
+import { mockUser, mockCategories } from "../utils/mockData";
 
 const delay = (ms = 250) => new Promise((resolve) => setTimeout(resolve, ms));
 let nextId = 1000;
@@ -13,6 +13,7 @@ const api = {
         await delay();
 
         if (url === '/auth/me') return { data: mockUser }
+        if (url === '/categories') return { data: mockCategories };
 
         return { data: null };
     },
@@ -43,6 +44,7 @@ const api = {
                 }
             }
         }
+        if (url === '/categories') return { data: { id: newId(), is_default: false, ...body } };
 
         return { data: null }
     },

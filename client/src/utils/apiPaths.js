@@ -4,5 +4,11 @@ export const API_PATHS = {
         LOGIN: '/auth/login',
         ME: '/auth/me',
     },
+    CATEGORIES: {
+        LIST: '/categories',
+        CREATE: '/categories',
+        UPDATE: (id) => `/categories/${id}`,
+        DELETE: (id) => `/categories/${id}`
+    },
 
 }
