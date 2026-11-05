@@ -5,7 +5,7 @@ const { Pool, types } = pkg;
 
 // Sans cette variable, pg se rabattrait silencieusement sur localhost:5432
 if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL is missing: check your environment variables.");
+    throw new Error("DATABASE_URL is missing: check your environment variables.");
 }
 
 // Les colonnes DATE (OID 1082) sont renvoyées en 'YYYY-MM-DD' au lieu d'un objet Date JS,
@@ -21,6 +21,7 @@ const pool = new Pool({
     max: 20,                        // nombre max de clients dans le pool
     idleTimeoutMillis: 30000,       // inactivité avant fermeture d'une connexion
     connectionTimeoutMillis: 30000, // temps max pour obtenir une connexion (réveil de Neon inclus)
+    //ssl: { rejectUnauthorized: false },
 });
 
 pool.on('connect', (client) => {

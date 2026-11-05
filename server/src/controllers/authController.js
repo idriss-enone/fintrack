@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { withTransaction } from "../db.js";
 import * as userModel from "../models/userModel.js";
+import * as categoryModel from "../models/categoryModel.js";
+import { withTransaction } from "../db.js";
+import defaultCategories from "../utils/defaultCategories.js";
 import {
     normalizeEmail,
     normalizeCurrency,
@@ -10,7 +12,7 @@ import {
 } from "../validators/authValidator.js";
 
 
-const signToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '7h' });
+const signToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
 export async function register(req, res) {
     const body = req.body ?? {};
@@ -38,7 +40,7 @@ export async function register(req, res) {
                 passwordHash,
                 currency: input.currency
             }, client);
-
+            await categoryModel.createDefaults(newUser.id, defaultCategories, client);
             return newUser;
         });
 
