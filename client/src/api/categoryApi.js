@@ -13,7 +13,7 @@ export function create(payload) {
 }
 
 export function update(id, payload) {
-    return api.put(API_PATHS.CATEGORIES.UPDATE(id), payload).then((res) => res.data);
+    return api.patch(API_PATHS.CATEGORIES.UPDATE(id), payload).then((res) => res.data);
 }
 
 export function remove(id) {

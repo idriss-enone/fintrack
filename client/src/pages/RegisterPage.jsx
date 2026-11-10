@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useRegister } from "@/hooks/useRegister";
 import FormField from "@/components/ui/FormField";
 import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 import PasswordInput from "@/components/ui/PasswordInput";
 import Select from "@/components/ui/Select";
 import Spinner from "@/components/Spinner";
@@ -142,15 +143,15 @@ export default function RegisterPage() {
           </FormField>
 
           {/* Bouton */}
-          <button
+          <Button
             type="submit"
-            aria-disabled={isSubmitting}
+            disabled={isSubmitting}
             aria-busy={isSubmitting}
-            className="group w-full inline-flex items-center justify-center gap-2 bg-linear-to-br from-violet-400 to-violet-600 active:bg-violet-800 text-white font-semibold py-4 rounded-md transition shadow-lg shadow-violet-500/30 disabled:opacity-60 disabled:cursor-not-allowed"
+            className="group w-full bg-linear-to-br from-violet-400 to-violet-600 py-4 rounded-2xl font-semibold shadow-lg shadow-violet-500/30 hover:from-violet-500 hover:to-violet-700 active:from-violet-600 active:to-violet-800 disabled:opacity-60"
           >
             {isSubmitting ? (
               <>
-                <Spinner size="sm" />
+                <Spinner size="sm" tone="light" label="" />
                 Création du compte…
               </>
             ) : (
@@ -163,7 +164,8 @@ export default function RegisterPage() {
                 />
               </>
             )}
-          </button>
+          </Button>
+          
         </form>
 
         <p className="mt-8 text-center text-sm text-slate-500">

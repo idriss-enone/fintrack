@@ -1,8 +1,10 @@
 import {
     Tag,
-    Utensils,
+    PlusCircle,
     ShoppingCart,
     ShoppingBag,
+    CreditCard,
+    MoreHorizontal,
     Car,
     Home,
     Zap,
@@ -18,10 +20,10 @@ import {
 } from "lucide-react";
 
 export const CATEGORY_ICONS = {
-    tag: Tag,
-    utensils: Utensils,
+    "plus-circle": PlusCircle,
     "shopping-cart": ShoppingCart,
     "shopping-bag": ShoppingBag,
+    "credit-card": CreditCard,
     car: Car,
     home: Home,
     zap: Zap,
@@ -33,6 +35,7 @@ export const CATEGORY_ICONS = {
     gift: Gift,
     laptop: Laptop,
     "trending-up": TrendingUp,
+    "more-horizontal": MoreHorizontal,
     sparkles: Sparkles,
 };
 

@@ -16,7 +16,7 @@ const ServerUnreachable = ({ retry }) => {
           <WifiOff size={24} />
         </div>
 
-        <h1 className="font-display text-2xl font-bold tracking-tight text-slate-900">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900">
           Serveur injoignable
         </h1>
 
