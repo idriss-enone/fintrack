@@ -20,7 +20,7 @@ export default function FormField({
       <div>
         {children}
         {help && (
-          <p id={`${id}-hint`} className="text-sm text-muted mt-1">
+          <p id={`${id}-help`} className="text-sm text-slate-400 mt-1">
             {help}
           </p>
         )}
@@ -29,7 +29,7 @@ export default function FormField({
       {error && (
         <p
           id={`${id}-error`}
-          aria-live="assertive"
+          role="alert"
           className="text-xs font-medium text-rose-600"
         >
           {error}

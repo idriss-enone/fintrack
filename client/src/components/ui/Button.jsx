@@ -1,3 +1,5 @@
+import { cn } from "@/lib/cn";
+
 const variants = {
   primary:
     "bg-linear-to-b from-violet-500 to-violet-600 hover:from-violet-600 hover:to-violet-700 text-white shadow-md shadow-violet-500/25",
@@ -16,13 +18,20 @@ const sizes = {
 const Button = ({
   variant = "primary",
   size = "md",
+  type = "button",
   className = "",
   children,
   ...props
 }) => {
   return (
     <button
-      className={`inline-flex items-center justify-center gap-2 rounded-full font-medium transition disabled:opacity-50 disabled:cursor-not-allowed ${variants[variant]} ${sizes[size]} ${className}`}
+      type={type}
+      className={cn(
+        "inline-flex items-center justify-center gap-2 rounded-full font-medium transition disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2",
+        variants[variant],
+        sizes[size],
+        className,
+      )}
       {...props}
     >
       {children}
