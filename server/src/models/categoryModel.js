@@ -16,6 +16,15 @@ export async function findAllByUser(userId, type = null) {
     return result.rows;
 }
 
+// Une catégorie précise (seulement si elle appartient à l'utilisateur), sinon null
+export async function findByIdAndUser(id, userId) {
+    const result = await pool.query(
+        `SELECT ${FIELDS} FROM categories
+         WHERE id = $1 AND user_id = $2`,
+        [id, userId]
+    );
+    return result.rows[0] ?? null;
+}
 // Crée une catégorie et la renvoie
 export async function create(userId, { name, type, icon, color }) {
     const result = await pool.query(
