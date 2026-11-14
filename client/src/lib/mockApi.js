@@ -1,10 +1,39 @@
 import { toISODateString } from "../utils/format";
-import { mockUser, mockCategories, mockBudgets, mockBudgetAnalyses } from "../utils/mockData";
+import {
+    mockUser,
+    mockCategories,
+    mockTransactions,
+    mockBudgets,
+    mockDashboardSummary,
+    mockMonthlyTrend,
+    mockCategoryBreakdown,
+    mockBudgetAnalyses,
+} from "../utils/mockData";
 //import { getAccessToken } from "./storage";
 
-const delay = (ms = 2500) => new Promise((resolve) => setTimeout(resolve, ms));
+const delay = (ms = 250) => new Promise((resolve) => setTimeout(resolve, ms));
 let nextId = 1000;
 const newId = () => nextId++;
+
+const filterTransactions = (params = {}) => {
+    let result = [...mockTransactions];
+    if (params.search) {
+        const q = String(params.search).toLowerCase();
+        result = result.filter(
+            (t) =>
+                (t.description || '').toLowerCase().includes(q) ||
+                (t.notes || '').toLowerCase().includes(q)
+        );
+    }
+    if (params.categoryId) {
+        result = result.filter((t) => String(t.category_id) === String(params.categoryId));
+    }
+    if (params.type) {
+        result = result.filter((t) => t.type === params.type);
+    }
+    const limit = parseInt(params.limit, 10) || 50;
+    return result.slice(0, limit);
+};
 
 const DEMO_PASSWORD = "Demo1234!";
 
@@ -39,16 +68,21 @@ const getPeriodBounds = (period) => {
 };
 
 const api = {
-    get: async (url) => {
+    get: async (url, config = {}) => {
         // Simulation d'un appel réseau
         await delay();
+        const params = config.params || {};
 
         if (url === '/auth/me') {
             return { data: mockUser }
         }
 
         if (url === '/categories') return { data: mockCategories };
+        if (url === "/transactions") return { data: filterTransactions(params) };
         if (url === "/budgets") return { data: budgets };
+        if (url === '/dashboard/summary') return { data: mockDashboardSummary };
+        if (url === '/dashboard/monthly-trend') return { data: mockMonthlyTrend };
+        if (url === '/dashboard/category-breakdown') return { data: mockCategoryBreakdown };
 
         return { data: null };
     },
@@ -109,6 +143,7 @@ const api = {
         };
 
         if (url === "/budgets/analyze") {
+            await delay(2500);
             return { data: { analyses } };
         }
 
