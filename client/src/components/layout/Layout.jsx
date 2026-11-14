@@ -53,7 +53,7 @@ const Layout = () => {
   }, [pathname]);
 
   return (
-    <div className="h-dvh flex bg-slate-50 overflow-hidden">
+    <div className="relative h-dvh flex bg-slate-50 overflow-hidden">
       {/* Lien d'évitement : visible seulement au clavier */}
       <a
         href="#contenu"
@@ -84,7 +84,7 @@ const Layout = () => {
           ref={mainRef}
           id="contenu"
           tabIndex={-1}
-          className="flex-1 overflow-y-auto p-4 md:p-6"
+          className="relative flex-1 overflow-y-auto p-4 md:p-6"
         >
           <Outlet />
         </main>

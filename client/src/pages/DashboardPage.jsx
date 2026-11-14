@@ -67,7 +67,7 @@ const Home = () => {
           Vue d'ensemble de vos finances pour ce mois.
         </p>
       </div>
-      <div>
+      <section>
         <h2 className="sr-only">Statistiques</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <KpiCard
@@ -98,7 +98,7 @@ const Home = () => {
             accent="blue"
           />
         </div>
-      </div>
+      </section>
 
       {/* Section Graphiques */}
       <section aria-labelledby="charts-heading">

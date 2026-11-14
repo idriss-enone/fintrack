@@ -14,6 +14,7 @@ const CategoryBadge = ({ name, icon, color, size = "md", ariaLabel }) => {
   return (
     <span
       className="inline-flex items-center gap-3 min-w-0"
+      role={!name && ariaLabel ? "img" : undefined}
       aria-label={!name && ariaLabel ? ariaLabel : undefined}
     >
       <span
