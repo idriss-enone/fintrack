@@ -6,11 +6,11 @@ import {
   PiggyBank,
   ArrowRight,
   Target,
-  AlertTriangle,
 } from "lucide-react";
 import { useDashboard } from "@/hooks/useDashboard";
 import { formatCurrency, formatDate } from "@/utils/format.js";
 import Button from "@/components/ui/Button";
+import AlertBox from "@/components/AlertBox";
 import KpiCard from "@/components/KpiCard";
 import CategoryBadge from "../components/CategoryBadge";
 import MonthlyTrendChart from "@/components/charts/MonthlyTrendChart";
@@ -34,6 +34,7 @@ const Home = () => {
     aggColor,
     enrichedBudgets,
     error,
+    retrying,
     retry,
   } = useDashboard();
 
@@ -45,30 +46,37 @@ const Home = () => {
     );
   }
 
-  if (error) {
-    return (
-      <EmptyState
-        icon={AlertTriangle}
-        as="h1"
-        title="Impossible de charger le tableau de bord"
-        description="Vérifiez votre connexion, puis réessayez."
-        action={<Button onClick={retry}>Réessayer</Button>}
-      />
-    );
-  }
-
   return (
     <div className="space-y-6">
-      <div>
+      <header>
         <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
           Tableau de bord
         </h1>
         <p className="text-sm text-slate-500 mt-1.5">
           Vue d'ensemble de vos finances pour ce mois.
         </p>
-      </div>
-      <section>
-        <h2 className="sr-only">Statistiques</h2>
+      </header>
+      {!error && (
+        <AlertBox
+          type="danger"
+          title="Impossible de charger le tableau de bord"
+          message="Vérifiez votre connexion, puis réessayez."
+          action={
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={retry}
+              disabled={retrying}
+            >
+              {retrying ? "Nouvelle tentative…" : "Réessayer"}
+            </Button>
+          }
+        />
+      )}
+      <section aria-labelledby="stats-heading">
+        <h2 id="stats-heading" className="sr-only">
+          Statistiques
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <KpiCard
             label="Solde net"
