@@ -56,7 +56,7 @@ const Home = () => {
           Vue d'ensemble de vos finances pour ce mois.
         </p>
       </header>
-      {!error && (
+      {error && (
         <AlertBox
           type="danger"
           title="Impossible de charger le tableau de bord"
