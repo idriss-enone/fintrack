@@ -18,6 +18,7 @@ export function useDashboard() {
     const [loading, setLoading] = useState(true);
 
     const [error, setError] = useState(false);
+    const [retrying, setRetrying] = useState(false);
     const [reloadKey, setReloadKey] = useState(0);
 
     useEffect(() => {
@@ -44,7 +45,10 @@ export function useDashboard() {
                 if (!ignore) setError(true);
             }
             finally {
-                if (!ignore) setLoading(false);
+                if (!ignore) {
+                setLoading(false);
+                setRetrying(false);
+            }
             }
         }
         load();
@@ -119,6 +123,7 @@ export function useDashboard() {
 
         enrichedBudgets,
         error,
+        retrying,
         retry
     }
 
