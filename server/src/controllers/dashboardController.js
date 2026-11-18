@@ -1,7 +1,7 @@
 import * as dashboardModel from "../models/dashboardModel.js";
 
 const pctChange = (current, previous) => {
-    if (previous === 0) return current === 0 ? 0 : 100;
+    if (previous === 0) return null;
     return ((current - previous) / previous) * 100;
 };
 
@@ -15,7 +15,7 @@ export async function getSummary(req, res) {
         const expenseLastMonth = parseFloat(summary.expense_last_month);
 
         const balance = incomeThisMonth - expenseThisMonth;
-        const savingRate = incomeThisMonth > 0 ? (balance / incomeThisMonth) * 100 : 0;
+        const savingsRate = incomeThisMonth > 0 ? (balance / incomeThisMonth) * 100 : 0;
 
         return res.json({
             incomeThisMonth,
@@ -23,7 +23,7 @@ export async function getSummary(req, res) {
             incomeLastMonth,
             expenseLastMonth,
             balance,
-            savingRate,
+            savingsRate,
             incomeDelta: pctChange(incomeThisMonth, incomeLastMonth),
             expenseDelta: pctChange(expenseThisMonth, expenseLastMonth),
         });
