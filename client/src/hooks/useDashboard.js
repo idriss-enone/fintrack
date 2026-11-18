@@ -12,7 +12,7 @@ export function useDashboard() {
 
     const [summary, setSummary] = useState(null);
     const [trend, setTrend] = useState([]);
-    const [breakdown, setBreakdown] = useState([]);
+    const [breakdown, setBreakdown] = useState(null);
     const [transactions, setTransactions] = useState([]);
     const [budgets, setBudgets] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -37,8 +37,9 @@ export function useDashboard() {
                 setSummary(s);
                 setTrend(t);
                 setBreakdown(b);
-                setTransactions(tx)
-                setBudgets(bd)
+                setTransactions(tx);
+                setBudgets(bd);
+                setError(false);
             }
             catch (err) {
                 console.error(err);

@@ -1,6 +1,6 @@
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 import { TrendingDown } from "lucide-react";
-import { formatCurrency } from "@/utils/format.js";
+import { formatCurrency,formatAmountCompact } from "@/utils/format.js";
 import EmptyState from "@/components/EmptyState";
 
 const GRADIENTS = [
@@ -17,12 +17,14 @@ const CategoryBreakdownChart = ({ data, currency }) => {
     return <EmptyState icon={TrendingDown} title="Aucune dépense trouvée." />;
   }
 
-  const top = data.slice(0, 5);
+  const top = data.categories.slice(0, 5);
+
+  const totalExpenses = top.reduce((sum, row) => sum + parseFloat(row.total), 0);
 
   const formatted = top.map((d, i) => {
     const g = GRADIENTS[i % GRADIENTS.length];
     return {
-      name: d.category_name,
+      name: d.categoryName,
       value: parseFloat(d.total),
       gradientId: g.id,
       solid: g.solid,
@@ -32,7 +34,7 @@ const CategoryBreakdownChart = ({ data, currency }) => {
   return (
     <figure aria-label="Répartition des dépenses par catégorie">
       {/* Graphique visuel (masqué aux lecteurs d'écran car doublon avec la liste ci-dessous) */}
-      <div className="h-44" aria-hidden="true">
+      <div className="relative h-44" aria-hidden="true">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <defs>
@@ -56,11 +58,10 @@ const CategoryBreakdownChart = ({ data, currency }) => {
               nameKey="name"
               cx="50%"
               cy="50%"
-              innerRadius={40}
-              outerRadius={70}
+              innerRadius={55}
+              outerRadius={80}
               paddingAngle={2}
               stroke="none"
-              style={{ cursor: "pointer", outline: "none" }}
             >
               {formatted.map((entry) => (
                 <Cell key={entry.name} fill={`url(#${entry.gradientId})`} />
@@ -77,6 +78,19 @@ const CategoryBreakdownChart = ({ data, currency }) => {
             />
           </PieChart>
         </ResponsiveContainer>
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+          <div className="max-w-[82px] text-center px-1">
+            <span className="block text-[9px] font-medium text-slate-400 uppercase tracking-wider">
+              Total
+            </span>
+          </div>
+          <span 
+          className="block text-xs font-bold text-slate-900 truncate"
+          title={formatAmountCompact(totalExpenses, currency)}
+          >
+            {formatAmountCompact(totalExpenses, currency)}
+          </span>
+        </div>
       </div>
 
       {/* Légende sémantique sous forme de liste */}

@@ -222,10 +222,15 @@ const buildMonthlyTrend = () => {
 
 export const mockMonthlyTrend = buildMonthlyTrend();
 
-export const mockCategoryBreakdown = [
-  { category_id: 9, category_name: 'Loyer', category_icon: 'home', category_color: '#F43F5E', total: '1800.00', transaction_count: 1 },
-  { category_id: 6, category_name: 'Restaurants & Cafés', category_icon: 'utensils', category_color: '#F59E0B', total: '320.00', transaction_count: 8 },
-  { category_id: 7, category_name: 'Courses', category_icon: 'shopping-cart', category_color: '#EAB308', total: '262.00', transaction_count: 4 },
-  { category_id: 8, category_name: 'Transports', category_icon: 'car', category_color: '#EF4444', total: '139.00', transaction_count: 4 },
-  { category_id: 11, category_name: 'Divertissement', category_icon: 'film', category_color: '#A855F7', total: '95.00', transaction_count: 3 },
-];
+
+export const mockCategoryBreakdown = {
+  categories : [
+    { category_id: 9, categoryName: 'Loyer', categoryIcon: 'home', categoryColor: '#F43F5E', total: '1800.00', transactionCount: 1 },
+    { category_id: 6, categoryName: 'Restaurants & Cafés', categoryIcon: 'utensils', categoryColor: '#F59E0B', total: '320.00', transactionCount: 8 },
+    { category_id: 7, categoryName: 'Courses', categoryIcon: 'shopping-cart', categoryColor: '#EAB308', total: '262.00', transactionCount: 4 },
+    { category_id: 8, categoryName: 'Transports', categoryIcon: 'car', categoryColor: '#EF4444', total: '139.00', transactionCount: 4 },
+    { category_id: 11, categoryName: 'Divertissement', categoryIcon: 'film', categoryColor: '#A855F7', total: '95.00', transactionCount: 3 },
+  ],
+  totalExpenses: 2616
+} 
+

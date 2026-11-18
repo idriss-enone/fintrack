@@ -62,6 +62,16 @@ export const formatCurrency = (amount, currency = "USD", { decimals, showSign = 
 
 
 /**
+ * Formate un montant en notation compacte pour les graphiques
+ * @param {number} amount
+ * @returns {string} Ex: "25k"
+ */
+export function formatAmountCompact(amount) {
+  return new Intl.NumberFormat('fr-FR', { notation: 'compact' }).format(amount)
+}
+
+
+/**
 * Retourne la date du jour au format YYYY-MM-DD, dans le fuseau horaire de l'utilisateur.
 *
 * N'utilise pas `new Date().toISOString()` : il donne la date en UTC, qui peut être celle de la
