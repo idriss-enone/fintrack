@@ -181,7 +181,7 @@ export async function analyzeTransaction(req, res) {
 
         // Appel au service Gemini
         const analysis = await geminiService.analyzeTransactionList({ transactions, currency });
-        return res.json({ success: true, data: analysis });
+        return res.json(analysis);
     } catch (err) {
         console.error('Erreur route analyse transactions :', err);
         return res.status(500).json({ message: "Erreur lors de l'analyse des transactions." });
