@@ -1,11 +1,14 @@
 import * as transactionModel from "../models/transactionModel.js";
 import * as categoryModel from "../models/categoryModel.js";
+import * as userModel from "../models/userModel.js";
+import * as geminiService from '../services/geminiService.js';
 import { parseId, toNumber, normalizeText } from "../validators/commonValidator.js";
 import {
     validateCreate,
     validateUpdate,
     validateListFilters
 } from "../validators/transactionValidator.js";
+
 
 const DEFAULT_LIMIT = 50;
 
@@ -145,4 +148,43 @@ export async function deleteTransaction(req, res) {
         console.error('DeleteTransaction error', error);
         res.status(500).json({ message: 'server error' });
     }
+}
+
+
+export async function analyzeTransaction(req, res) {
+    const { transactionIds } = req.body
+
+    // Vérification que transactionIds est bien un tableau non vide
+    if (!Array.isArray(transactionIds) || transactionIds.length === 0) {
+        return res.status(400).json({ message: 'Le tableau transactionIds est requis.' });
+    }
+
+    // Limite à 50 éléments puis nettoyage pour ne garder que des entiers valides
+    const validIds = transactionIds
+        .slice(0, 50)
+        .map(Number)
+        .filter((id) => Number.isInteger(id) && id > 0);
+
+    if (validIds.length === 0) {
+        return res.status(400).json({ message: 'Aucun identifiant de transaction valide fourni.' });
+    }
+
+    try {
+        // Récupération en parallèle des transactions et de la devise (avec await)
+        const [transactions, currency] = await Promise.all([
+            transactionModel.findTransactionsByIds(req.userId, validIds),
+            userModel.getUserCurrency(req.userId),
+        ]);
+        if (transactions.length === 0) {
+            return res.status(404).json({ message: "Aucune transaction trouvée pour l'analyse." });
+        }
+
+        // Appel au service Gemini
+        const analysis = await geminiService.analyzeTransactionList({ transactions, currency });
+        return res.json({ success: true, data: analysis });
+    } catch (err) {
+        console.error('Erreur route analyse transactions :', err);
+        return res.status(500).json({ message: "Erreur lors de l'analyse des transactions." });
+    }
+
 }

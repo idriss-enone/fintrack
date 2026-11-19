@@ -30,3 +30,12 @@ export async function create({ name, email, passwordHash, currency }, db = pool)
     );
     return result.rows[0];
 }
+
+// Obtenir la Devise d'un 'utilisateur et le renvoie.
+export async function getUserCurrency(userId) {
+    const result = await pool.query(
+        `SELECT currency FROM users WHERE id = $1`,
+        [userId]
+    );
+    return result.rows[0]?.currency || "USD";
+}

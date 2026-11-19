@@ -27,6 +27,10 @@ export async function createBudget(req, res) {
     }
 
     try {
+        const categoryId = Number(input.categoryId);
+        const amount = Number(normalizeAmount(input.amount));
+        const period = isMissing(input.period) ? 'monthly' : String(input.period).trim();
+        const startDate = isMissing(input.startDate) ? null : input.startDate;
         // La catégorie doit exister, appartenir à l'utilisateur et être une catégorie de dépenses
         const category = await categoryModel.findByIdAndUser(categoryId, req.userId);
         if (!category) {
@@ -36,16 +40,13 @@ export async function createBudget(req, res) {
             return res.status(400).json({ message: "A budget can only be set on an expense category" });
         }
 
-        const category_id = Number(input.categoryId);
-        const amount = Number(normalizeAmount(input.amount));
-        const period = isMissing(input.period) ? 'monthly' : String(input.period).trim();
-        const start_date = isMissing(input.startDate) ? null : input.startDate;
+
 
         const budget = await budgetModel.create(req.userId, {
-            category_id,
+            category_id: category.id,
             amount: amount,
             period: period,
-            start_date
+            start_date:startDate
         });
         res.status(201).json(budget);
     } catch (error) {

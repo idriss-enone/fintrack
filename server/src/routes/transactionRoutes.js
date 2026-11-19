@@ -2,6 +2,7 @@ import express from "express";
 import {
     getTransactions,
     createTransaction,
+    analyzeTransaction,
     updateTransaction,
     deleteTransaction
 } from "../controllers/transactionController.js";
@@ -13,6 +14,7 @@ router.use(authenticate); // toutes les routes transactions nécessitent d'être
 
 router.get("/", getTransactions);
 router.post("/", createTransaction);
+router.post("/analyze", analyzeTransaction);
 router.patch("/:id", updateTransaction);
 router.delete("/:id", deleteTransaction);
 

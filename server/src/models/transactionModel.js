@@ -16,7 +16,7 @@ export async function findAllByUser(userId, { type = null, categoryId = null, fr
     const escapeLike = (value) => value.replace(/[\\%_]/g, "\\$&");
     const searchPattern = search ? `%${escapeLike(search)}%` : null;
 
-    
+
     const result = await pool.query(
         `SELECT ${SELECT_FIELDS}
          FROM transactions t
@@ -95,4 +95,18 @@ export async function remove(id, userId) {
         [id, userId]
     );
     return result.rowCount > 0;
+}
+
+export async function findTransactionsByIds(userId, ids) {
+    const result = await pool.query(
+        `SELECT ${SELECT_FIELDS}
+        FROM transactions t
+        LEFT JOIN categories c 
+        ON c.id = t.category_id
+        WHERE t.user_id = $1 AND t.id = ANY($2::int[])
+        ORDER BY t.transaction_date DESC`,
+        [userId, ids]
+    );
+    return result.rows;
+
 }
