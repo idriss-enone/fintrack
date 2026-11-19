@@ -249,7 +249,21 @@ export function useTransaction() {
             toast.error("Aucune transaction à analyser");
             return;
         }
-        if (analysisLoading) return;
+
+        setAnalysisLoading(true);
+        try {
+            const selectedIds = transactions.slice(0, 50).map((t) => t.id);
+            const result = await transactionApi.analyze(selectedIds);
+            setAnalysis(result);
+
+            if (transactions.length > 50) {
+                toast("Analyse basée sur les 50 premières transactions affichées");
+            }
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Échec de l'analyse");
+        } finally {
+            setAnalysisLoading(false);
+        }
     }
     const dismissAnalysis = () => setAnalysis(null);
 

@@ -165,6 +165,7 @@ const TransactionsPage = () => {
               </div>
             </div>
             <Button
+              type="submit"
               disabled={analysisLoading || transactions.length === 0}
               onClick={generateInsight}
               size="sm"

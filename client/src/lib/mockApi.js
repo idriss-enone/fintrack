@@ -8,6 +8,7 @@ import {
     mockMonthlyTrend,
     mockCategoryBreakdown,
     mockBudgetAnalyses,
+    mockTransactionAnalysis
 } from "../utils/mockData";
 //import { getAccessToken } from "./storage";
 
@@ -141,6 +142,7 @@ const api = {
             budgets = [...budgets, budget];
             return { data: budget };
         };
+        if (url === '/transactions/analyze') return { data: mockTransactionAnalysis };
 
         if (url === "/budgets/analyze") {
             await delay(2500);

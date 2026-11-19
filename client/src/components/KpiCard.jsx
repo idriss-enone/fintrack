@@ -1,4 +1,4 @@
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 
 const gradients = {
   violet: "from-violet-400 to-violet-600",
@@ -19,8 +19,10 @@ const KpiCard = ({
   invertDelta = false,
 }) => {
   const hasDelta = delta != null && Number.isFinite(delta);
-  const isUp = hasDelta && delta >= 0;
-  const isGood = invertDelta ? !isUp : isUp;
+  const isUp = hasDelta && delta > 0;
+  const isDown = hasDelta && delta < 0;
+  const isFlat = hasDelta && delta === 0;
+  const isGood = isFlat ? true : invertDelta ? isDown : isUp;
   const gradient = gradients[accent] || gradients.slate;
 
   return (
@@ -44,15 +46,17 @@ const KpiCard = ({
           </span>
           {hasDelta && (
             <span
-              className={`text-xs font-semibold shrink-0 inline-flex items-center gap-0.5 ${isGood ? "text-emerald-600" : "text-rose-600"}`}
+              className={`text-xs font-semibold shrink-0 inline-flex items-center gap-0.5 ${isFlat ? "text-slate-600" : isGood ? "text-emerald-600" : "text-rose-600"}`}
             >
               {isUp ? (
                 <TrendingUp size={12} aria-hidden="true" />
-              ) : (
+              ) : isDown ? (
                 <TrendingDown size={12} aria-hidden="true" />
+              ) : (
+                <Minus size={12} aria-hidden="true" />
               )}
               <span className="sr-only">
-                {isUp ? "en hausse de" : "en baisse de"}
+                {isUp ? "en hausse de" : isDown ? "en baisse de" : "stable"}
               </span>
               {Math.abs(delta).toFixed(1)}%
             </span>

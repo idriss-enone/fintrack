@@ -225,12 +225,20 @@ export const mockMonthlyTrend = buildMonthlyTrend();
 
 export const mockCategoryBreakdown = {
   categories : [
-    { category_id: 9, categoryName: 'Loyer', categoryIcon: 'home', categoryColor: '#F43F5E', total: '1800.00', transactionCount: 1 },
-    { category_id: 6, categoryName: 'Restaurants & Cafés', categoryIcon: 'utensils', categoryColor: '#F59E0B', total: '320.00', transactionCount: 8 },
-    { category_id: 7, categoryName: 'Courses', categoryIcon: 'shopping-cart', categoryColor: '#EAB308', total: '262.00', transactionCount: 4 },
-    { category_id: 8, categoryName: 'Transports', categoryIcon: 'car', categoryColor: '#EF4444', total: '139.00', transactionCount: 4 },
-    { category_id: 11, categoryName: 'Divertissement', categoryIcon: 'film', categoryColor: '#A855F7', total: '95.00', transactionCount: 3 },
+    { categoryId: 9, categoryName: 'Loyer', categoryIcon: 'home', categoryColor: '#F43F5E', total: '1800.00', transactionCount: 1 },
+    { categoryId: 6, categoryName: 'Restaurants & Cafés', categoryIcon: 'utensils', categoryColor: '#F59E0B', total: '320.00', transactionCount: 8 },
+    { categoryId: 7, categoryName: 'Courses', categoryIcon: 'shopping-cart', categoryColor: '#EAB308', total: '262.00', transactionCount: 4 },
+    { categoryId: 8, categoryName: 'Transports', categoryIcon: 'car', categoryColor: '#EF4444', total: '139.00', transactionCount: 4 },
+    { categoryId: 11, categoryName: 'Divertissement', categoryIcon: 'film', categoryColor: '#A855F7', total: '95.00', transactionCount: 3 },
   ],
   totalExpenses: 2616
 } 
 
+// -----------------------------------------------------------------------------
+// Réponse simulée de l'analyseur de transactions
+// -----------------------------------------------------------------------------
+export const mockTransactionAnalysis = {
+  insight:
+    'Vos dépenses sont stables, la catégorie Restaurants & Cafés arrivant en tête avec 320 $ répartis sur 8 transactions. Les abonnements représentent environ 43 $/mois — un montant modéré mais qui mérite d’être examiné. La majeure partie des dépenses discrétionnaires a lieu le week-end.',
+  highlight: 'Dépenses stables',
+};
